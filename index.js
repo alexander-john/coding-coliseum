@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Question = require('./models/Question'); // Import the Question model
 
-const app = express();
+const index = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
+index.use(cors());
+index.use(express.json());
 
 // Connect to MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI, {
@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_URI, {
     .catch((error) => console.error('MongoDB connection error:', error));
 
 // API endpoint to get a random question from MongoDB
-app.get('/api/random-question', async (req, res) => {
+index.get('/api/random-question', async (req, res) => {
     try {
         const count = await Question.countDocuments(); // Get the total number of documents
         const randomIndex = Math.floor(Math.random() * count);
@@ -32,10 +32,10 @@ app.get('/api/random-question', async (req, res) => {
 });
 
 // Basic route for testing
-app.get('/', (req, res) => {
+index.get('/', (req, res) => {
     res.send('Hello from Express!');
 });
 
-app.listen(PORT, () => {
+index.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
