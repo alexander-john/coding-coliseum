@@ -19,15 +19,20 @@ mongoose.connect(process.env.MONGO_URI, {
     .catch((error) => console.error('MongoDB connection error:', error));
 
 // API endpoint to get a random question from MongoDB
-index.get('/api/random-question', async (req, res) => {
+index.get('/api/questions/:topic', async (req, res) => {
+    const { topic } = req.params;
+
     try {
-        const count = await Question.countDocuments(); // Get the total number of documents
-        const randomIndex = Math.floor(Math.random() * count);
-        const randomQuestion = await Question.findOne().skip(randomIndex); // Fetch a random document
-        res.json(randomQuestion);
+        // Adjust the query to match your MongoDB collection
+        const questions = await Question.find({ topic });
+        if (questions.length > 0) {
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            res.json({ question: questions[randomIndex].question });
+        } else {
+            res.status(404).json({ question: "No questions found for this topic." });
+        }
     } catch (error) {
-        console.error("Error fetching random question:", error);
-        res.status(500).json({ error: "An error occurred while fetching the question" });
+        res.status(500).json({ error: "Error fetching questions" });
     }
 });
 

@@ -2,8 +2,8 @@
 const mongoose = require('mongoose');
 
 const questionSchema = new mongoose.Schema({
-    question: { type: String, required: true },
-    difficulty: { type: String, enum: ['easy', 'medium', 'hard'], default: 'medium' }
+    topic: { type: String, required: true }, // e.g., "JavaScript", "CSS", "HTML"
+    question: { type: String, required: true }, // e.g., "What is a closure in JavaScript?"
 });
 
 module.exports = mongoose.model('Question', questionSchema);
